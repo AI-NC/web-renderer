@@ -9,7 +9,12 @@
     "wasm_renderer.d.ts"
   ],
   "publishConfig": {
-    "registry": "https://github.com/AI-NC/web-renderer"
+    "registry": "https://github.com/ai-nc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ai-nc/web-renderer.git",
+    "directory": "renderer-core"
   },
   "module": "wasm_renderer.js",
   "types": "wasm_renderer.d.ts",
