@@ -1,0 +1,17 @@
+{
+  "name": "@ai-nc/renderer-core",
+  "description": "Web Renderer allows for rendering and advanced interaction of parametric 3D models in .golf format",
+  "version": "0.1.0",
+  "license": "SEE LICENSE IN LICENSE",
+  "files": [
+    "wasm_renderer_bg.wasm",
+    "wasm_renderer.js",
+    "wasm_renderer.d.ts"
+  ],
+  "publishConfig": {
+    "registry": "https://github.com/AI-NC/web-renderer"
+  },
+  "module": "wasm_renderer.js",
+  "types": "wasm_renderer.d.ts",
+  "sideEffects": false
+}
