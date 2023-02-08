@@ -9,7 +9,7 @@
     "wasm_renderer.d.ts"
   ],
   "publishConfig": {
-    "registry": "https://github.com/ai-nc"
+    "registry": "https://npm.pkg.github.com/ai-nc"
   },
   "repository": {
     "type": "git",

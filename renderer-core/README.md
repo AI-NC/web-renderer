@@ -1,4 +1,4 @@
-# AI-NC Golf Renderer
+# AI-NC Web Renderer
 
 This package contains AI-NC's online model viewer, written in Rust and compiled into Web Assembly (WASM) using Web Pack.
 
@@ -10,7 +10,7 @@ All three packages are provided using a private NPM registry where the current a
 
 Please contact george@ai-nc.com for access to the full AI-NC SDK repository with examples and additional documentation.
 
-In order to download packages from the registry you will need an authorization token, you should have been provided with one, but i am *fairly sure* you can generate one with the gitlab account that was given access to the SDK repository.
+In order to download packages from the registry you will need an authorization token, you should have been provided with one, but i am *fairly sure* you can generate one with the github account that was given access to the SDK repository.
 
 ## Local development
 
@@ -18,15 +18,15 @@ For local development add a `.npmrc` file at the root level of your project *(sa
 
 In that file add:
 ```
-@ai-nc:registry=https://gitlab.com/api/v4/packages/npm/
-//gitlab.com/api/v4/packages/npm/:_authToken=[YOUR_AUTH_TOKEN]
+@ai-nc:registry=https://npm.pkg.github.com/ai-nc
+//npm.pkg.github.com/ai-nc:_authToken=[YOUR_AUTH_TOKEN]
 ```
 
 Then packages can be added to you `package.json` as a dependency: 
 
 ```
 "dependencies": {
-    "@ai-nc/a-components": "^0.1.0",
+    "@ai-nc/renderer-core": "^0.1.0",
     "@ai-nc/react-renderer": "^0.1.0",
     ...
 },
@@ -39,8 +39,8 @@ Then packages can be added to you `package.json` as a dependency:
 To allow the use of these packages in a build environment add the following commands to your preBuild phase (these must be executed before `npm install`).
 
 ```
-npm config set @ai-nc:registry=https://gitlab.com/api/v4/packages/npm/
-npm config set //gitlab.com/api/v4/packages/npm/:_authToken=[YOUR_AUTH_TOKEN]
+npm config set @ai-nc:registry=https://npm.pkg.github.com/ai-nc
+npm config set //npm.pkg.github.com/ai-nc:_authToken=[YOUR_AUTH_TOKEN]
 ```
 
 For example the `amplify.yml` for deployment on AWS Amplify could be:
@@ -51,8 +51,8 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm config set @ai-nc:registry=https://gitlab.com/api/v4/packages/npm/
-        - npm config set //gitlab.com/api/v4/packages/npm/:_authToken=[YOUR_AUTH_TOKEN]
+        - npm config set @ai-nc:registry=https://npm.pkg.github.com/ai-nc
+        - npm config set //npm.pkg.github.com/ai-nc:_authToken=[YOUR_AUTH_TOKEN]
         - npm install
     build:
       commands:
