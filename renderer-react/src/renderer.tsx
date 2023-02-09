@@ -1,11 +1,21 @@
+/**
+ * React Renderer - renderer.tsx
+ * 
+ * This React app contains AI-NC's web based .golf renderer.
+ * It can be run as a demo application with using 'npm run start'
+ * 
+ * Copyright (c) 2023 AI-NC
+ */
+
 import { Component, ReactNode } from "react";
 import * as WasmType from "@ai-nc/renderer-core";
 
 declare global {
+  // Currently the renderer 
   interface Window { renderer_event_listner: (event: String, data?: any) => void }
 }
 
-type RendererProps = {buffer: ArrayBuffer};
+type RendererProps = {buffer: Uint8Array};
 type RendererState = {buffer?: Uint8Array, renderer?: WasmType.GolfRenderer};
 
 /**
@@ -15,7 +25,7 @@ export class AINCRenderer extends Component<RendererProps, RendererState> {
   state: RendererState = {}
   constructor(props: RendererProps) {
     super(props);
-    this.state={buffer: new Uint8Array(props.buffer)}
+    this.state={buffer: props.buffer}
   }
 
   async componentDidMount() {
@@ -31,11 +41,16 @@ export class AINCRenderer extends Component<RendererProps, RendererState> {
     });
     await wasm.default();
 
-    this.setState({ renderer: new wasm.GolfRenderer(), buffer: this.state.buffer });
+    this.setState({ renderer: new wasm.GolfRenderer(true), buffer: this.state.buffer });
 
     setTimeout(() => {
-      if(this.state.renderer && this.state.buffer) this.state.renderer.load("wow")
+      console.log(this.state.buffer)
+      if(this.state.renderer && this.state.buffer) this.state.renderer.load(this.state.buffer)
     }, 3000)
+    // setTimeout(() => {
+    //   console.log(this.state.buffer)
+    //   if(this.state.renderer && this.state.buffer) this.state.renderer.load(this.state.buffer)
+    // }, 5000)
   }
 
   componentWillUnmount(): void {
