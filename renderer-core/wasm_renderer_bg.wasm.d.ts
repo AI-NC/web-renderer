@@ -2,7 +2,7 @@
 /* eslint-disable */
 export const memory: WebAssembly.Memory;
 export function __wbg_golfrenderer_free(a: number): void;
-export function golfrenderer_new(a: number): number;
+export function golfrenderer_new(a: number, b: number, c: number): number;
 export function golfrenderer_load(a: number, b: number, c: number): void;
 export function golfrenderer_clear(a: number): void;
 export function golfrenderer_focus(a: number, b: number, c: number): void;

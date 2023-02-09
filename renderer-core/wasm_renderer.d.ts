@@ -12,9 +12,10 @@ export class GolfRenderer {
 * Create a new renderer.
 *
 * NOTE: The canvas must be rendered in the DOM tree before the renderer is created.
+* @param {Uint8Array} initial_model
 * @param {boolean | undefined} print_debug_info
 */
-  constructor(print_debug_info?: boolean);
+  constructor(initial_model: Uint8Array, print_debug_info?: boolean);
 /**
 * Render a .golf file, if there is already a model loaded this will first unload
 * that model.
@@ -48,7 +49,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly __wbg_golfrenderer_free: (a: number) => void;
-  readonly golfrenderer_new: (a: number) => number;
+  readonly golfrenderer_new: (a: number, b: number, c: number) => number;
   readonly golfrenderer_load: (a: number, b: number, c: number) => void;
   readonly golfrenderer_clear: (a: number) => void;
   readonly golfrenderer_focus: (a: number, b: number, c: number) => void;
