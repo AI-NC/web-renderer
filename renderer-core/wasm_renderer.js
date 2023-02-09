@@ -329,21 +329,32 @@ export class GolfRenderer {
         wasm.__wbg_golfrenderer_free(ptr);
     }
     /**
-    * Create a new renderer.
+    * Start the renderer.
     *
     * NOTE: The canvas must be rendered in the DOM tree before the renderer is created.
-    * @param {Uint8Array} initial_model
+    *
+    * A golf file in bytes (see docs for load) may be passed in when starting up the renderer. This will load the
+    * model as the renderer boots up.
+    *
+    * print_debug_info is highly recommended in development.
+    * @param {Uint8Array | undefined} golf
     * @param {boolean | undefined} print_debug_info
     */
-    constructor(initial_model, print_debug_info) {
-        const ptr0 = passArray8ToWasm0(initial_model, wasm.__wbindgen_malloc);
-        const len0 = WASM_VECTOR_LEN;
+    constructor(golf, print_debug_info) {
+        var ptr0 = isLikeNone(golf) ? 0 : passArray8ToWasm0(golf, wasm.__wbindgen_malloc);
+        var len0 = WASM_VECTOR_LEN;
         const ret = wasm.golfrenderer_new(ptr0, len0, isLikeNone(print_debug_info) ? 0xFFFFFF : print_debug_info ? 1 : 0);
         return GolfRenderer.__wrap(ret);
     }
     /**
-    * Render a .golf file, if there is already a model loaded this will first unload
-    * that model.
+    * Render a .golf file, if there is already a model loaded this will first unload that model.
+    *
+    * These files must be passed in as a Uint8Array containing the raw bytes of the model. Depending on the package
+    * being used for API requests this may require an option to be set to prevent JS turning the body into a string.
+    * For example for Axios the config option 'responseType' must be set to 'arraybuffer'.
+    *
+    * .golf files can be created by sending step files to the AI-NC API. They can then be saved for better performance
+    * and reduced upload/download.
     * @param {Uint8Array} golf
     */
     load(golf) {
@@ -352,13 +363,14 @@ export class GolfRenderer {
         wasm.golfrenderer_load(this.ptr, ptr0, len0);
     }
     /**
-    * Unload the currently rendered model.
-    */
-    clear() {
-        wasm.golfrenderer_clear(this.ptr);
-    }
-    /**
-    * Focus the camera on the provided faces and edges.
+    * Focus the provided faces and edges.
+    *
+    * Focus is a stronger highlight than identify. It applies greater opacity to other faces, and overwrites all other
+    * focus and identify commands.
+    *
+    * Sending a focus event with an empty vector will clear all focus and identify events.
+    *
+    * The ID of faces and edges are emitted by 'on_select' events when a user interacts with the model.
     * @param {Uint32Array} ids
     */
     focus(ids) {
@@ -368,6 +380,13 @@ export class GolfRenderer {
     }
     /**
     * Highlight the provided faces and edges.
+    *
+    * identify is a weaker highlight than focus. It applies a lower opacity to other faces, and only overwrites other
+    * identify commands.
+    *
+    * Sending a focus event with an empty vector will clear all identify events.
+    *
+    * The ID of faces and edges are emitted by 'on_select' events when a user interacts with the model.
     * @param {Uint32Array} ids
     */
     identify(ids) {
@@ -376,9 +395,8 @@ export class GolfRenderer {
         wasm.golfrenderer_identify(this.ptr, ptr0, len0);
     }
     /**
-    * The close function must be called when the canvas element the renderer
-    * is drawing to is unloaded. Otherwise the renderer will panic and cannot
-    * be relaunched without refreshing the window.
+    * The close function MUST be called when the canvas element the renderer is drawing to is unloaded. Otherwise the
+    * renderer will panic and cannot be relaunched without refreshing the window.
     */
     close() {
         wasm.golfrenderer_close(this.ptr);
@@ -1693,44 +1711,44 @@ function getImports() {
         const ret = wasm.memory;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper9176 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 1931, __wbg_adapter_32);
+    imports.wbg.__wbindgen_closure_wrapper9204 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 1924, __wbg_adapter_32);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper9178 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 1931, __wbg_adapter_35);
+    imports.wbg.__wbindgen_closure_wrapper9206 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 1924, __wbg_adapter_35);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper9180 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 1931, __wbg_adapter_38);
+    imports.wbg.__wbindgen_closure_wrapper9208 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 1924, __wbg_adapter_38);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper9182 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 1931, __wbg_adapter_41);
+    imports.wbg.__wbindgen_closure_wrapper9210 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 1924, __wbg_adapter_41);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper9184 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 1931, __wbg_adapter_35);
+    imports.wbg.__wbindgen_closure_wrapper9212 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 1924, __wbg_adapter_35);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper9186 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 1931, __wbg_adapter_41);
+    imports.wbg.__wbindgen_closure_wrapper9214 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 1924, __wbg_adapter_41);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper9188 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 1935, __wbg_adapter_38);
+    imports.wbg.__wbindgen_closure_wrapper9216 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 1928, __wbg_adapter_38);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper9190 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 1931, __wbg_adapter_41);
+    imports.wbg.__wbindgen_closure_wrapper9218 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 1924, __wbg_adapter_41);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper47332 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 16475, __wbg_adapter_52);
+    imports.wbg.__wbindgen_closure_wrapper47407 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 16481, __wbg_adapter_52);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper53629 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 19805, __wbg_adapter_55);
+    imports.wbg.__wbindgen_closure_wrapper53704 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 19811, __wbg_adapter_55);
         return addHeapObject(ret);
     };
 

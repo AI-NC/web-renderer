@@ -11,11 +11,18 @@ import { Component, ReactNode } from "react";
 import * as WasmType from "@ai-nc/renderer-core";
 
 declare global {
-  // Currently the renderer 
-  interface Window { renderer_event_listner: (event: String, data?: any) => void }
+  /**
+   * We need to attach a listener to the window so the renderer can send events to JS with it
+   * 
+   * TEMPORARY: This is a bit un-ergonomic and will probably change in later versions
+   */
+  interface Window { renderer_event_listener: (event: String, data?: any) => void }
 }
 
-type RendererProps = { buffer: Uint8Array };
+type RendererProps = { 
+  /** The model to be renderer */
+  buffer: Uint8Array 
+};
 type RendererState = { buffer?: Uint8Array, renderer?: WasmType.GolfRenderer };
 
 /**
@@ -29,7 +36,7 @@ export class AINCRenderer extends Component<RendererProps, RendererState> {
   }
 
   async componentDidMount() {
-    window.renderer_event_listner = (event: String, data?: any) => {
+    window.renderer_event_listener = (event: String, data?: any) => {
       console.log("event: " + event);
       console.log("data: " + data);
     };
@@ -40,13 +47,12 @@ export class AINCRenderer extends Component<RendererProps, RendererState> {
       throw e;
     });
     await wasm.default();
-    console.log(this.state.buffer)
     if (this.state.buffer) this.setState({ renderer: new wasm.GolfRenderer(this.state.buffer, true), buffer: this.state.buffer });
 
-    // setTimeout(() => {
-    //   console.log(this.state.buffer)
-    //   if(this.state.renderer && this.state.buffer) this.state.renderer.load(this.state.buffer)
-    // }, 3000)
+    setTimeout(() => {
+      console.log(this.state.buffer)
+      if(this.state.renderer && this.state.buffer) this.state.renderer.load(this.state.buffer)
+    }, 3000)
     // setTimeout(() => {
     //   console.log(this.state.buffer)
     //   if(this.state.renderer && this.state.buffer) this.state.renderer.load(this.state.buffer)
@@ -55,7 +61,7 @@ export class AINCRenderer extends Component<RendererProps, RendererState> {
 
   componentWillUnmount(): void {
     if (this.state.renderer) this.state.renderer.close();
-    window.renderer_event_listner = (event: String, data?: any) => { };
+    window.renderer_event_listener = (event: String, data?: any) => { };
   }
 
   render(): ReactNode {

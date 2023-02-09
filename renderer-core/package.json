@@ -1,7 +1,7 @@
 {
   "name": "@ai-nc/renderer-core",
   "description": "Web Renderer allows for rendering and advanced interaction of parametric 3D models in .golf format",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "SEE LICENSE IN LICENSE",
   "files": [
     "wasm_renderer_bg.wasm",

@@ -72,7 +72,7 @@ export default class App extends Component {
     if (!this.state.buffer && !this.state.golf) {
       return (
         <div>
-          <input type="file" onChange={(e) => this.readFile(e)} accept=".stp, .step" />
+          <input type="file" onChange={(e) => this.readFile(e)} accept=".stp, .step, .tg" />
         </div>
       );
     } else if (!this.state.golf) {
