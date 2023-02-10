@@ -19,14 +19,14 @@
   },
   "main": "index.tsx",
   "dependencies": {
-    "@ai-nc/renderer-core": "../renderer-core",
+    "@ai-nc/renderer-core": "0.1.1",
     "@types/node": "^16.18.12",
     "@types/react": "^16.12",
     "@types/react-dom": "^16.0",
     "axios": "^1.3.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "5.0",
+    "react-scripts": ">=0.9",
     "typescript": "^4.9.5"
   },
   "scripts": {
