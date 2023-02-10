@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import App from './App';
 import { AINCRenderer } from './renderer';
 
@@ -16,9 +16,10 @@ import { AINCRenderer } from './renderer';
 export default AINCRenderer;
 
 // Start up the simple test application
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <App />
+// const root = ReactDOM.createRoot(
+//   document.getElementById('root') as HTMLElement
+// );
+ReactDOM.render(
+  <App />,
+  document.getElementById('root') as HTMLElement,
 );

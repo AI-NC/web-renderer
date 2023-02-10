@@ -65,7 +65,7 @@ export default class App extends Component {
     console.log(buffer)
     let response = await axios.post(API_ADDRESS, buffer, { responseType: 'arraybuffer', headers: { "Authorization": AINC_API_KEY } });
     console.log(response);
-    this.setState({ golf: new Uint8Array(response.data)})
+    this.setState({ golf: new Uint8Array(response.data) })
   }
 
   render(): ReactNode {
@@ -77,9 +77,10 @@ export default class App extends Component {
       );
     } else if (!this.state.golf) {
       // If the buffer is full, return a loading screen until the model has been processed
-      <div>
+      return (<div>
         <h1>Very cool loading screen</h1>
       </div>
+      )
     } else {
       return (
         <div style={{ width: "100vw", height: "100vh" }}>
