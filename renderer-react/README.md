@@ -1,70 +1,38 @@
-# AI-NC Web Renderer
+# AI-NC React Web Renderer
 
-This package contains AI-NC's online model viewer, written in Rust and compiled into Web Assembly (WASM) using Web Pack.
+This NPM package contains a prebuilt react component that contains AI-NC's Web Assembly .golf renderer.
 
-The renderer is designed to be embedded in a JavaScrypt or TypeScrypt web page, and is provided as a raw WASM package, a prebuilt Vue Component, and a prebuilt React component.
+**For information on how to access and deploy the renderer see the repository level readme, It is also recommended you look over the README for @ai-nc/renderer-core**
 
-# Access to packages and examples
+There are 2 options for running this project.
 
-All three packages are provided using a private NPM registry where the current and previous versions can be downloaded. New updates will be pushed to this registry along with patch notes and feature additions.
+Using `npm start` will launch a demo application that allows a local step file to be rendered in the browser.
 
-Please contact george@ai-nc.com for access to the full AI-NC SDK repository with examples and additional documentation.
+Using `npm build` will compile the renderer component into a separate types and javascript file that are then used to create the `@ai-nc/renderer-react` package for embedding into other web pages.
 
-In order to download packages from the registry you will need an authorization token, you should have been provided with one, but i am *fairly sure* you can generate one with the github account that was given access to the SDK repository.
+## Importing the renderer
 
-## Local development
+The renderer is imported from the `renderer-react` package:
 
-For local development add a `.npmrc` file at the root level of your project *(same level as the package.json)*, Make sure this file is added to your `.gitignore`
-
-In that file add:
-```
-@ai-nc:registry=https://npm.pkg.github.com/ai-nc
-//npm.pkg.github.com/ai-nc:_authToken=[YOUR_AUTH_TOKEN]
+```typescript
+import { AINCRenderer } from "@ai-nc/renderer-react";
 ```
 
-Then packages can be added to you `package.json` as a dependency: 
+It can then be imbedded in HTML just like any other react component
 
-```
-"dependencies": {
-    "@ai-nc/renderer-core": "^0.1.0",
-    "@ai-nc/react-renderer": "^0.1.0",
-    ...
-},
-```
-
-**Ensure your no file containing your authorization token is committed to git**
-
-## Deployment
-
-To allow the use of these packages in a build environment add the following commands to your preBuild phase (these must be executed before `npm install`).
-
-```
-npm config set @ai-nc:registry=https://npm.pkg.github.com/ai-nc
-npm config set //npm.pkg.github.com/ai-nc:_authToken=[YOUR_AUTH_TOKEN]
+```html
+return (
+  <div style={{ width: "100vw", height: "100vh" }}>
+    <AINCRenderer buffer={golf_file_as_bytes}></AINCRenderer>
+  </div>
+);
 ```
 
-For example the `amplify.yml` for deployment on AWS Amplify could be:
+## Renderer Props
 
-```
-version: 1
-frontend:
-  phases:
-    preBuild:
-      commands:
-        - npm config set @ai-nc:registry=https://npm.pkg.github.com/ai-nc
-        - npm config set //npm.pkg.github.com/ai-nc:_authToken=[YOUR_AUTH_TOKEN]
-        - npm install
-    build:
-      commands:
-        - npm run build
-  artifacts:
-    baseDirectory: dist
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
-```
+Currently the renderer has one prop buffer. This must be a .golf file as a Uint8Array when the renderer is loaded into the DOM tree. For details on the .golf file see the readme in `renderer-core`.
+
+**`More config and functionality is being added the props`**
 
 **COPYRIGHT NOTICE**
 

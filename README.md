@@ -72,6 +72,28 @@ frontend:
       - node_modules/**/*
 ```
 
+# Access to the AI-NC API
+
+In order to get `.golf` files, `.step` files must be sent to the AI-NC API. This API is currently being served as a beta at the url:
+
+```
+https://masher-zkwr5vkj.fermyon.app
+```
+
+To convert a step file must be sent to this address as a POST request. A header must be added to this request to authorize the use of the endpoint.
+
+```
+{ Authorization: YOUR_API_KEY }
+```
+
+Finally the response must be received as bytes, or a `Uint8Array` in JS/TS. Javascript has a tendency to turn things into strings, so make sure your request is set upr properly if you are having trouble loading the resulting file into the renderer.
+
+## Known Limitations
+
+Currently the API is in beta. This means all .golf files should be treated as deprecated as they **will not work** with the full version of the renderer.
+
+In addition during beta the endpoint is hosted on a very light server, and large step files may not load before the response times out.
+
 **COPYRIGHT NOTICE**
 
 *2023 AI-NC
