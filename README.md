@@ -32,6 +32,12 @@ Then packages can be added to you `package.json` as a dependency:
 },
 ```
 
+or installed normally:
+
+```
+npm install @ai-nc/react-renderer
+```
+
 **Ensure your no file containing your authorization token is committed to git**
 
 ## Deployment
