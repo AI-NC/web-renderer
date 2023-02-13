@@ -8,7 +8,7 @@
  */
 
 import { Component, ReactNode } from "react";
-import * as WasmType from "@ai-nc/renderer-core";
+import * as RendererCore from "@ai-nc/renderer-core";
 
 declare global {
   /**
@@ -35,7 +35,7 @@ type RendererProps = {
 };
 type RendererState = {
   /** The wasm object that contains the renderer. Used for issuing commands to the renderer */
-  renderer?: WasmType.GolfRenderer
+  renderer?: RendererCore.GolfRenderer
   /** Has the model currently in the buffer been loaded (used to prevent re-loading model on prop change) */
   model_loaded: boolean;
   /** WIP The id's of the faces currently selected by the user */
@@ -81,22 +81,18 @@ export class AINCRenderer extends Component<RendererProps, RendererState> {
     //
     // This takes a little while. It could be worth experimenting with loading in the wasm file in the background then
     // passing it already initialized to this component as a prop.
-    let wasm = await import("@ai-nc/renderer-core").catch((e) => {
-      console.error("Error importing renderer");
-      throw e;
-    });
-    await wasm.default(); // This actually downloads and sets up the wasm file
+    await RendererCore.default();
 
     // If there is already a model in the buffer, load it in immediately
     if (this.props.buffer) {
       // Start the renderer with the model, and debug mode enabled.
       //
       // NOTE: window.renderer_event_listener MUST be set before the renderer is created.
-      let renderer = new wasm.GolfRenderer(this.props.buffer, true);
+      let renderer = new RendererCore.GolfRenderer(this.props.buffer, true);
       this.setState({ renderer, model_loaded: true });
     } else {
       // Start the renderer without a model, and debug mode enabled.
-      let renderer = new wasm.GolfRenderer(undefined, true);
+      let renderer = new RendererCore.GolfRenderer(undefined, true);
       this.setState({ renderer });
     }
   }
