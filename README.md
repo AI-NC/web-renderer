@@ -27,7 +27,7 @@ Then packages can be added to you `package.json` as a dependency:
 ```
 "dependencies": {
     "@ai-nc/renderer-core": "^0.1.0",
-    "@ai-nc/react-renderer": "^0.1.0",
+    "@ai-nc/renderer-react": "^0.1.0",
     ...
 },
 ```
@@ -35,7 +35,7 @@ Then packages can be added to you `package.json` as a dependency:
 or installed normally:
 
 ```
-npm install @ai-nc/react-renderer
+npm install @ai-nc/renderer-react
 ```
 
 **Ensure your no file containing your authorization token is committed to git**
