@@ -88,6 +88,8 @@ To convert a step file must be sent to this address as a POST request. A header 
 
 Finally the response must be received as bytes, or a `Uint8Array` in JS/TS. Javascript has a tendency to turn things into strings, so make sure your request is set upr properly if you are having trouble loading the resulting file into the renderer.
 
+Currently the endpoint has cors headers to  allow all cross site requests, but we will probably want to lock this down.
+
 ## Known Limitations
 
 Currently the API is in beta. This means all .golf files should be treated as deprecated as they **will not work** with the full version of the renderer.
