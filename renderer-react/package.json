@@ -1,7 +1,7 @@
 {
   "name": "@ai-nc/renderer-react",
   "description": "React wrapper for the Web Renderer that allows for rendering and advanced interaction of parametric 3D models in .golf format",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "license": "SEE LICENSE IN LICENSE",
   "files": [
     "dist/renderer.js",
@@ -19,7 +19,7 @@
   },
   "main": "index.tsx",
   "dependencies": {
-    "@ai-nc/renderer-core": "0.1.2",
+    "@ai-nc/renderer-core": "0.2.0",
     "@types/node": "^16.18.12",
     "@types/react": "^16.12",
     "@types/react-dom": "^16.0",

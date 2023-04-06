@@ -14,9 +14,8 @@ import { Component, ReactNode } from "react";
 import { AINCRenderer } from "./renderer";
 import axios from "axios"
 
-const API_ADDRESS = "https://masher-zkwr5vkj.fermyon.app";
-// FIX: Even this temp key should be loaded from .env
-const AINC_API_KEY = "AAAAC3NzaC1lZDI1NTE5AAAAIHrph8LVhxgZI3rOyWr4r/mDBz1eONRM5qRt/ZC1cZNn";
+const API_ADDRESS = "https://api.ai-nc.com/step";
+const API_KEY = "YOUR KEY HERE"; // NOTE: You should not be deploying a publicly facing application with your key in it
 
 
 export default class App extends Component {
@@ -57,13 +56,15 @@ export default class App extends Component {
   }
 
   /**
+   * An function that gets a .golf file from the AI-NC API
    * 
+   * @param buffer A buffer containing the bytes of the .step file to load
    */
   async process_file(buffer: ArrayBuffer) {
     this.setState({ buffer })
 
-    console.log(buffer)
-    let response = await axios.post(API_ADDRESS, buffer, { responseType: 'arraybuffer', headers: { "Authorization": AINC_API_KEY } });
+    console.log(API_KEY)
+    let response = await axios.post(API_ADDRESS, buffer, { responseType: 'arraybuffer', headers: { "ainc-api-token": API_KEY } });
     console.log(response);
     this.setState({ golf: new Uint8Array(response.data) })
   }
