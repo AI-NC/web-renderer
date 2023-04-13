@@ -9,18 +9,16 @@
 export class GolfRenderer {
   free(): void;
 /**
-* Start the renderer.
+* Create a new renderer.
 *
-* NOTE: The canvas must be rendered in the DOM tree before the renderer is created.
-*
-* A golf file in bytes (see docs for load) may be passed in when starting up the renderer. This will load the
-* model as the renderer boots up.
-*
-* print_debug_info is highly recommended in development.
-* @param {Uint8Array | undefined} golf
-* @param {boolean | undefined} print_debug_info
+* @param {(event: String, data?: any): void} callback - The callback function used by the renderer to send updates
+* to a JavaScript application.
+* 
+* @param {boolean} debug? - Print debug messages, highly recommended for development.
+* @param {Function} callback
+* @param {boolean | undefined} debug
 */
-  constructor(golf?: Uint8Array, print_debug_info?: boolean);
+  constructor(callback: Function, debug?: boolean);
 /**
 * Render a .golf file, if there is already a model loaded this will first unload that model.
 *
@@ -69,7 +67,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly __wbg_golfrenderer_free: (a: number) => void;
-  readonly golfrenderer_new: (a: number, b: number, c: number) => number;
+  readonly golfrenderer_new: (a: number, b: number) => number;
   readonly golfrenderer_load: (a: number, b: number, c: number) => void;
   readonly golfrenderer_focus: (a: number, b: number, c: number) => void;
   readonly golfrenderer_identify: (a: number, b: number, c: number) => void;

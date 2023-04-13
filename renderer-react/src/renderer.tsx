@@ -10,28 +10,18 @@
 import { Component, ReactNode } from "react";
 import * as RendererCore from "@ai-nc/renderer-core";
 
-declare global {
-  /**
-   * We need to attach a listener to the window so the renderer can send events to JS with it
-   * 
-   * TEMPORARY: This is a bit un-ergonomic and will probably change in later versions
-   */
-  interface Window { renderer_event_listener: (event: String, data?: any) => void }
-}
-
 type RendererProps = {
   /**
-   * The model to be rendered. If this prop is filled when the renderer is launched the model will be loaded immediately
-   * otherwise it will be loaded when the prop is supplied.
-   * 
-   * The model passed in must be a Uint8Array containing the raw bytes of the .golf file. Depending on the package
-   * being used for API requests this may require an option to be set to prevent JS turning the body into a string.
-   * For example for Axios the config option 'responseType' must be set to 'arraybuffer'.
-   * 
-   * .golf files can be created by sending step files to the AI-NC API. They can then be saved for better performance
-   * and reduced upload/download.
+   * The function to receive updates from the renderer with
+   * @param event A string determining the event type see the wiki for options
+   * @param data The data attached to the event
+   * @returns 
    */
-  buffer?: Uint8Array
+  update_function: (event: String, data?: any) => void
+  /**
+   * Should the renderer print debug messages
+   */
+  debug?: boolean
 };
 type RendererState = {
   /** The wasm object that contains the renderer. Used for issuing commands to the renderer */
@@ -50,30 +40,45 @@ export class AINCRenderer extends Component<RendererProps, RendererState> {
 
   constructor(props: RendererProps) {
     super(props);
+  }
 
-    // We must attach a listener to the window. This function will be called by the renderer to send information to the
-    // application.
-    //
-    // This will probably be changed in future releases.
-    window.renderer_event_listener = (event: String, data?: any) => {
-      switch (event) {
-        case "on_load":
-          console.log("Model has finished loading")
-          break;
-        case "on_select":
-          console.log("WIP")
-          break;
-        case "Info":
-          console.info(data);
-          break;
-        case "Warning":
-          console.warn(data);
-          break;
-        case "Error":
-          console.error(data);
-          break;
-      }
-    };
+  /**
+   * Load a model into the renderer. Unloading the current model if any.
+   * 
+   * @param model - A `Uint8Array` containing the bytes of the model to be loaded
+   */
+  load(model: Uint8Array) {
+    if (!this.state.renderer) {
+      console.warn(`Tried to load model before WASM had loaded`);
+      return;
+    }
+    this.state.renderer.load(model)
+  }
+
+  /**
+   * Strongly Highlight a set of faces and edges by their IDs.
+   * 
+   * @param ids - The ids of the faces to highlight. To find ids listen to user select events
+   */
+  focus(ids: [String]) {
+    if (!this.state.renderer) {
+      console.warn(`Tried to highlight before WASM had loaded`);
+      return;
+    }
+    this.state.renderer.focus(ids)
+  }
+
+  /**
+   * Weakly Highlight a set of faces and edges by their IDs.
+   * 
+   * @param ids - The ids of the faces to highlight. To find ids listen to user select events
+   */
+  identify(ids: [String]) {
+    if (!this.state.renderer) {
+      console.warn(`Tried to highlight before WASM had loaded`);
+      return;
+    }
+    this.state.renderer.identify(ids)
   }
 
   async componentDidMount() {
@@ -83,18 +88,8 @@ export class AINCRenderer extends Component<RendererProps, RendererState> {
     // passing it already initialized to this component as a prop.
     await RendererCore.default();
 
-    // If there is already a model in the buffer, load it in immediately
-    if (this.props.buffer) {
-      // Start the renderer with the model, and debug mode enabled.
-      //
-      // NOTE: window.renderer_event_listener MUST be set before the renderer is created.
-      let renderer = new RendererCore.GolfRenderer(this.props.buffer, true);
-      this.setState({ renderer, model_loaded: true });
-    } else {
-      // Start the renderer without a model, and debug mode enabled.
-      let renderer = new RendererCore.GolfRenderer(undefined, true);
-      this.setState({ renderer });
-    }
+    let renderer = new RendererCore.GolfRenderer(this.props.update_function, this.props.debug);
+    this.setState({ renderer });
   }
 
   /**
@@ -103,7 +98,6 @@ export class AINCRenderer extends Component<RendererProps, RendererState> {
   */
   componentWillUnmount(): void {
     if (this.state.renderer) this.state.renderer.close();
-    window.renderer_event_listener = (event: String, data?: any) => { };
   }
 
   /**
