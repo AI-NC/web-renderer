@@ -1,3 +1,7 @@
+# DEPRICATED: This package is no longer supported
+
+### See the [renderer-react-demo](https://github.com/AI-NC/renderer-react-demo) for the new method of using the AI-NC renderer.
+
 # AI-NC Web Renderer
 
 This package contains AI-NC's online model viewer, written in Rust and compiled into Web Assembly (WASM) using Web Pack.
